@@ -1,0 +1,21 @@
+---
+title: "STAT545 Homework 03 The use of dplyr/ggplot2"
+output: github_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Overview
+
+This Rmarkdown file aims to explore the gapminder dataset with **dplyr** package, and to plot figures using **ggplot2** package. It will be used as a cheatsheet for future data manipulation and figure plotting. 
+
+## Import data frame and tidyverse pacakge
+
+Gapminder data will be used in this homework, and the dataset will be explored using "tidyverse" package. 
+
+```{r}
+library(gapminder)
+library(dplyr)
+# use suppressMessages(library(tidyverse)) to generate a pdf file
