@@ -1,6 +1,13 @@
 STAT545 Homework 03 The use of dplyr/ggplot2
 ================
 
+<style type="text/css">
+.twoC {width: 100%}
+.clearer {clear: both}
+.twoC .table {max-width: 50%; float: right}
+.twoC img {max-width: 50%; float: left}
+</style>
+
 ## Overview
 
 This Rmarkdown file aims to explore the gapminder dataset with **dplyr**
@@ -291,8 +298,8 @@ expectancy until I got some help from
 ## But I want to explore more
 
 The following chunks will put the table and plot side by side, but only
-when the output is a html\_document. Please look at the gapminder.html
-to see how it works. I was inspired by this
+when the output is a html\_document file. Please look at the
+gapminder.html to see how it works. I was inspired by this
 [webpage](https://stackoverflow.com/questions/31753897/2-column-section-in-r-markdown).
 
 ``` r
@@ -301,9 +308,7 @@ t_mean <- gapminder %>%
   summarize(trim_mean = mean(lifeExp, trim = 0.1))
 ```
 
-<div class="row">
-
-<div class="col-md-6">
+<div class="twoC">
 
 ``` r
 knitr::kable(t_mean)
@@ -372,18 +377,10 @@ knitr::kable(t_mean)
 | 2007 | Europe    |   77.82504 |
 | 2007 | Oceania   |   80.71950 |
 
-</div>
-
-<div class="col-md-6">
-
-``` r
-t_mean %>% 
-  ggplot(aes(year, trim_mean, col = continent)) +
-  geom_line()
-```
-
 ![](gapminder_files/figure-gfm/unnamed-chunk-15-1.png)<!-- -->
 
 </div>
+
+<div class="clearer">
 
 </div>

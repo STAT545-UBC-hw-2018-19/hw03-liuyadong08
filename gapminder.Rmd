@@ -1,8 +1,15 @@
 ---
 title: "STAT545 Homework 03 The use of dplyr/ggplot2"
 output:
-  github_document
+  html_document: default
+  pdf_document: default
 ---
+<style type="text/css">
+.twoC {width: 100%}
+.clearer {clear: both}
+.twoC .table {max-width: 50%; float: right}
+.twoC img {max-width: 50%; float: left}
+</style>
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
@@ -115,26 +122,21 @@ I found the first part of this task very difficult. It was hard for me to count 
 
 ## But I want to explore more
 
-The following chunks will put the table and plot side by side, but only when the output is a html_document. Please look at the gapminder.html to see how it works. I was inspired by this [webpage](https://stackoverflow.com/questions/31753897/2-column-section-in-r-markdown). 
+The following chunks will put the table and plot side by side, but only when the output is a html_document file. Please look at the gapminder.html to see how it works. I was inspired by this [webpage](https://stackoverflow.com/questions/31753897/2-column-section-in-r-markdown). 
 
 ```{r}
 t_mean <- gapminder %>% 
   group_by(year, continent) %>% 
   summarize(trim_mean = mean(lifeExp, trim = 0.1))
 ```
-
-<div class = "row">
-<div class = "col-md-6">
+<div class="twoC">
 ```{r results = 'asis'}
 knitr::kable(t_mean)
 ```
 
-</div>
-<div class = "col-md-6">
-```{r}
-t_mean %>% 
-  ggplot(aes(year, trim_mean, col = continent)) +
-  geom_line()
+```{r echo=FALSE}
+ggplot(t_mean, aes(year, trim_mean, col = continent)) +
+  geom_line() + ggtitle("Trimmed mean value of life expectancy by continent")
 ```
 </div>
-</div>
+<div class="clearer"></div>
