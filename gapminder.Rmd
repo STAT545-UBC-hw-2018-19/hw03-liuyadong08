@@ -1,6 +1,8 @@
 ---
 title: "STAT545 Homework 03 The use of dplyr/ggplot2"
-output: github_document
+output:
+  pdf_document: default
+  html_document: default
 ---
 
 ```{r setup, include=FALSE}
@@ -13,16 +15,127 @@ This Rmarkdown file aims to explore the gapminder dataset with **dplyr** package
 
 ## Import data frame and tidyverse pacakge
 
-Gapminder data will be used in this homework, and the dataset will be explored using "tidyverse" package. 
+Gapminder data will be used in this homework, and the dataset will be explored using "dplyr" package. 
 
 ```{r}
 library(gapminder)
 library(dplyr)
+library(ggplot2)
+library(reshape2)
 # use suppressMessages(library(tidyverse)) to generate a pdf file
 ```
 
+## Task 1 Get the maximum and minimum of GDP per capita for all continents.
+
+To get the maximum and minimum value of GDP per capita for all continents, the data need to be group by continent, and then get the min and max value by calling **summarize** function.
+
 ```{r}
-gapminder %>% 
-  select(pop)
+min_max <- gapminder %>% 
+  group_by(continent) %>% 
+  summarize(min = min(gdpPercap),
+            max = max(gdpPercap))
+```
+The following chunk makes the table looks better. 
+```{r results = 'asis'}
+knitr::kable(min_max)
 ```
 
+In order to plot the min and max value, the data.frame needs to be reshaped. The following chunk will put the value of max and min in one column and lable the value in another column named variable. I found this [webpage](https://stackoverflow.com/questions/9531904/plot-multiple-columns-on-the-same-graph-in-r) helpful.
+
+```{r}
+min_max <- melt(min_max, id.vars = "continent")
+```
+
+The following chunk will produce a barplot. To plot the value of min and max side by side, I used position = position_dodge(.9), which is learned from [here](http://kweatherholtz.github.io/blog/intro-to-ggplot/). 
+
+```{r}
+min_max %>% 
+  ggplot(aes(continent, value)) +
+  geom_bar(stat = "identity", position = position_dodge(.9), aes(fill = variable))
+```
+
+The first part of this task is not hard, but I spent a lot of time on the second part. I cannot get the correct barplot before I learned how to reshape the data.frame. I found the **reshape2** package very helpful here. 
+
+## Task 2 Compute a trimmed mean of life expectancy of different continent for different years
+
+To get the trimmed mean value of the lifeExp, the value of trim needs to be specified in the mead() funtion.
+
+```{r}
+t_mean <- gapminder %>% 
+  group_by(year, continent) %>% 
+  summarize(trim_mean = mean(lifeExp, trim = 0.1))
+```
+
+```{r results = 'asis'}
+knitr::kable(t_mean)
+```
+
+The following chunk will a line plot of the change. 
+
+```{r}
+t_mean %>% 
+  ggplot(aes(year, trim_mean, col = continent)) +
+  geom_line()
+```
+
+This task is quite straight forwards, and the pattern in clearly shown by the plot.
+
+## Task 3 Report countries that has relative low life expectancy over time by continent.
+
+The reletive low life expectancy is defined as life expectancy lower than the mean of the worldwide life expectancy. First, the mean of the worldwide life expectancy (life expectancy benchmark) needs to be computed. 
+
+```{r}
+gm_worldmean_lifeExp <- gapminder %>% 
+  group_by(year) %>% 
+  mutate(lifeExp_benchmark = mean(lifeExp))
+```
+
+Then count the number of countries of each continent that has a small life expectancy value than the worldwide one for each year.
+
+```{r}
+num_lowExp_country <- gm_worldmean_lifeExp %>% 
+  mutate(rel_low = lifeExp < lifeExp_benchmark) %>% 
+  group_by(year, continent) %>% 
+  summarize(n_country = sum(rel_low == "TRUE"))
+```
+
+
+```{r results = 'asis'}
+knitr::kable(num_lowExp_country)
+```
+
+The following chunk plot a figure showing the number of low life expectancy countries of each continent over time.
+
+```{r}
+num_lowExp_country %>% 
+  ggplot(aes(year, n_country, col = continent)) +
+  geom_line()
+```
+
+I found the first part of this task very difficult. It was hard for me to count the number of countries that has a relatively low life expectancy until I got some help from [here](https://stackoverflow.com/questions/36580093/sum-a-column-based-on-condition-in-another-column-in-r). 
+
+## But I want to explore more
+
+The following chunks will put the table and plot side by side, but only when the output is a html_document. Please look at the gapminder.html to see how it works. I was inspired by this [webpage](https://stackoverflow.com/questions/31753897/2-column-section-in-r-markdown). 
+
+```{r}
+t_mean <- gapminder %>% 
+  group_by(year, continent) %>% 
+  summarize(trim_mean = mean(lifeExp, trim = 0.1))
+```
+
+<div class = "row">
+<div class = "col-md-6">
+```{r results = 'asis'}
+knitr::kable(t_mean)
+```
+
+</div>
+<div class = "col-md-6">
+```{r}
+t_mean %>% 
+  ggplot(aes(year, trim_mean, col = continent)) +
+  geom_line()
+```
+</div>
+</div>
