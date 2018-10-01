@@ -1,8 +1,8 @@
 ---
 title: "STAT545 Homework 03 The use of dplyr/ggplot2"
 output:
-  pdf_document: default
-  html_document: default
+  html_document: 
+    keep_md: yes
 ---
 
 ```{r setup, include=FALSE}
