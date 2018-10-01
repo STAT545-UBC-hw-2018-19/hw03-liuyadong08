@@ -1,8 +1,7 @@
 ---
 title: "STAT545 Homework 03 The use of dplyr/ggplot2"
 output:
-  html_document: default
-  pdf_document: default
+  github_document
 ---
 <style type="text/css">
 .twoC {width: 100%}
@@ -122,7 +121,7 @@ I found the first part of this task very difficult. It was hard for me to count 
 
 ## But I want to explore more
 
-The following chunks will put the table and plot side by side, but only when the output is a html_document file. Please look at the gapminder.html to see how it works. I was inspired by this [webpage](https://stackoverflow.com/questions/31753897/2-column-section-in-r-markdown). 
+The following chunks will put the table and plot side by side, but only when the output is a html_document file. You can check this page (http://rpubs.com/yadong_liu/424706) to see how it works. I was inspired by this [webpage](http://rpubs.com/jennybc/plot-next-to-table). 
 
 ```{r}
 t_mean <- gapminder %>% 

@@ -298,9 +298,9 @@ expectancy until I got some help from
 ## But I want to explore more
 
 The following chunks will put the table and plot side by side, but only
-when the output is a html\_document file. Please look at the
-gapminder.html to see how it works. I was inspired by this
-[webpage](https://stackoverflow.com/questions/31753897/2-column-section-in-r-markdown).
+when the output is a html\_document file. You can check this page
+(<http://rpubs.com/yadong_liu/424706>) to see how it works. I was
+inspired by this [webpage](http://rpubs.com/jennybc/plot-next-to-table).
 
 ``` r
 t_mean <- gapminder %>% 
