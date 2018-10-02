@@ -37,8 +37,8 @@ To get the maximum and minimum value of GDP per capita for all continents, the d
 ```{r}
 min_max <- gapminder %>% 
   group_by(continent) %>% 
-  summarize(min = min(gdpPercap),
-            max = max(gdpPercap))
+  summarize(min_gdpPercap = min(gdpPercap),
+            max_gdpPercap = max(gdpPercap))
 ```
 The following chunk makes the table looks better. 
 ```{r results = 'asis'}
@@ -59,6 +59,8 @@ min_max %>%
   geom_bar(stat = "identity", position = position_dodge(.9), aes(fill = variable))
 ```
 
+The table and the plot show the mininum and maxmum gdp per capita of each continent.
+
 The first part of this task is not hard, but I spent a lot of time on the second part. I cannot get the correct barplot before I learned how to reshape the data.frame. I found the **reshape2** package very helpful here. 
 
 ## Task 2 Compute a trimmed mean of life expectancy of different continent for different years
@@ -68,7 +70,7 @@ To get the trimmed mean value of the lifeExp, the value of trim needs to be spec
 ```{r}
 t_mean <- gapminder %>% 
   group_by(year, continent) %>% 
-  summarize(trim_mean = mean(lifeExp, trim = 0.1))
+  summarize(trim_mean_lifeExp = mean(lifeExp, trim = 0.1))
 ```
 
 ```{r results = 'asis'}
@@ -79,9 +81,11 @@ The following chunk will a line plot of the change.
 
 ```{r}
 t_mean %>% 
-  ggplot(aes(year, trim_mean, col = continent)) +
+  ggplot(aes(year, trim_mean_lifeExp, col = continent)) +
   geom_line()
 ```
+
+The table and the plot show the trimmed mean value of life expectancy of different continent over time.
 
 This task is quite straight forwards, and the pattern in clearly shown by the plot.
 
@@ -116,6 +120,8 @@ num_lowExp_country %>%
   ggplot(aes(year, n_country, col = continent)) +
   geom_line()
 ```
+
+The table and the plot show the number of countries that has a relatively low life expectancy in each continent over time.
 
 I found the first part of this task very difficult. It was hard for me to count the number of countries that has a relatively low life expectancy until I got some help from [here](https://stackoverflow.com/questions/36580093/sum-a-column-based-on-condition-in-another-column-in-r). 
 
